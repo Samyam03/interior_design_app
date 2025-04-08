@@ -17,13 +17,13 @@ function ImageSelection({ selectedImage }) {
       <div className="max-w-2xl mx-auto">
         <label 
           htmlFor="upload-image" 
-           className="block text-2xl font-semibold text-center mb-4 cursor-pointer whitespace-nowrap"
+          className="block text-2xl font-semibold text-center mb-4 cursor-pointer whitespace-nowrap"
         >
           Select Image of Your Room
         </label>
 
         <label htmlFor="upload-image" className="block cursor-pointer">
-          <div className="p-20 border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center hover:bg-gray-100 transition-all duration-200 aspect-video">
+          <div className="p-20 border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center hover:bg-gray-100 transition-all duration-200 aspect-video relative">
             {!file ? (
               <div className="flex flex-col items-center">
                 <Image 
@@ -38,10 +38,8 @@ function ImageSelection({ selectedImage }) {
               <Image
                 src={URL.createObjectURL(file)}
                 alt="Selected"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="w-full h-auto max-h-[300px] object-contain rounded-xl"
+                fill
+                className="object-cover rounded-xl"
               />
             )}
           </div>
