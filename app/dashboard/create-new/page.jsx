@@ -2,25 +2,56 @@
 
 import React from 'react'
 import ImageSelection from './_components/ImageSelection'
-import Image from 'next/image'
+import RoomType from './_components/RoomType'
+import DesignType from './_components/DesignType'
+import AdditionalRequirements from './_components/AdditionalRequirements'
+import { Button } from "@/components/ui/button"
+import { useState } from 'react'
 
 function CreateNew() {
 
-    const onHandleInputChange= (value,fieldName) => {
-        // your logic here
+    const [formData, setFormData] =useState();
+    const onHandleInputChange = (value, fieldName) => {
+        setFormData((prev) => ({
+            ...prev,
+            [fieldName]: value
+        }))
+   
+        console.log(formData);
     }
 
     return (
-        <div>
-            <h2 className="font-bold text-3xl text-primary text-center">
-                Use the power of AI for Interior Designing
-            </h2>
-            <p className='text-center text-gray-500'>
-                Transform your room in a moment using these features.
-            </p>
+        <div className="max-w-6xl mx-auto px-4 py-8">
+            <div className="text-center mb-8 ">
+                <h2 className="font-bold text-3xl md:text-4xl text-primary mb-2">
+                    Use the power of AI for Interior Designing
+                </h2>
+                <p className='text-gray-500 text-lg'>
+                    Transform your room in a moment using these features.
+                </p>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-items-center gap-4 mt-10">
-                <ImageSelection selectedImage={(value)=>onHandleInputChange(value,'image')} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div className="w-full h-full flex justify-center mt-15">
+                    <ImageSelection 
+                        selectedImage={(value) => onHandleInputChange(value, 'image')} 
+                    />
+                </div>
+                
+                <div className="space-y-6">
+                    <RoomType 
+                        selectedRoomType={(value) => onHandleInputChange(value, 'roomType')} 
+                    />
+
+                    <DesignType 
+                        selectedDesignType={(value) => onHandleInputChange(value, "designType")} 
+                    />
+
+                        <AdditionalRequirements 
+                            additionalRequirementInput={(value) => onHandleInputChange(value, 'additionalRequirements')}
+                        />
+                    <Button className="w-full">Generate</Button>
+                </div>
             </div>
         </div>
     )
