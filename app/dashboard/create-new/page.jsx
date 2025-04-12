@@ -7,6 +7,9 @@ import DesignType from './_components/DesignType'
 import AdditionalRequirements from './_components/AdditionalRequirements'
 import { Button } from "@/components/ui/button"
 import { useState } from 'react'
+import axios from 'axios';
+
+
 
 function CreateNew() {
 
@@ -19,6 +22,40 @@ function CreateNew() {
    
         console.log(formData);
     }
+
+    const generateAIImage = async () => {
+        const imageUrl = await saveImageToCloudinary(formData.image);
+        const res = await axios.post('/api/redesign-room', formData )
+        console.log (res.data);
+
+
+    }
+    const saveImageToCloudinary = async (imageFile) => {
+        try {
+            const formData = new FormData();
+            formData.append('file', imageFile);
+            formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+            
+            const response = await axios.post(
+                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    timeout: 30000
+                }
+            );
+    
+            // Log the Cloudinary URL
+            console.log('Uploaded image URL:', response.data.secure_url);
+            
+            return response.data.secure_url;
+        } catch (error) {
+            console.error('Cloudinary upload error:', error.response?.data || error.message);
+            throw new Error('Image upload failed');
+        }
+    };
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
@@ -50,7 +87,7 @@ function CreateNew() {
                         <AdditionalRequirements 
                             additionalRequirementInput={(value) => onHandleInputChange(value, 'additionalRequirements')}
                         />
-                    <Button className="w-full">Generate</Button>
+                    <Button className="w-full" onClick={generateAIImage}>Generate</Button>
                 </div>
             </div>
         </div>
